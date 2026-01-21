@@ -262,6 +262,7 @@ end
 - Comments within method bodies
 - Comments restating method name
 - TODO comments
+- FIXME comments
 - Commented-out code
 
 **Severity**: Low

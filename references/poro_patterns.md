@@ -18,6 +18,13 @@ class NotificationService
     # sends notification
   end
 end
+
+# app/services/user_signup_service.rb
+class UserSignupService
+  def self.call(user)
+    # signup the user
+  end
+end
 ```
 
 ### Good (Domain Model Pattern)
@@ -32,17 +39,29 @@ class Notification
     # sends notification
   end
 end
+
+# app/models/user/signup.rb
+class User::Signup
+  include ActiveModel::Model
+
+  attr_accessor :user
+
+  def call
+    # signup the user
+  end
+end
+
 ```
 
 ### Naming Guidelines
 
 | Instead of | Use |
 |------------|-----|
-| `UserSignupService` | `Registration` or `UserSignup` |
-| `PaymentProcessor` | `Payment` |
+| `UserSignupService` | `Registration` or `User::Signup` |
+| `PaymentProcessor` | `Payment::Processor` |
 | `NotificationService` | `Notification` or `NotificationDelivery` |
 | `EmailSender` | `Email` or `EmailMessage` |
-| `OrderCreator` | `Order` or `OrderPlacement` |
+| `OrderCreator`  | `Order` or `Order::Placement` |
 | `InvitationManager` | `Invitation` |
 
 **Rule**: Think of the **noun** or **noun group** that describes the domain concept.
@@ -256,8 +275,8 @@ Use to add presentation logic without polluting models.
 ### Pattern
 
 ```ruby
-# app/models/user_presenter.rb
-class UserPresenter
+# app/models/user/presenter.rb
+class User::Presenter
   def initialize(user)
     @user = user
   end
@@ -364,7 +383,7 @@ class UserRegistrationService
 end
 
 # After: It's handling a Registration
-class Registration
+class User::Registration
   include ActiveModel::Model
   # ...
 end
@@ -373,7 +392,7 @@ end
 ### Step 2: Add ActiveModel::Model
 
 ```ruby
-class Registration
+class User::Registration
   include ActiveModel::Model
   
   attr_accessor :email, :password, :plan
@@ -386,7 +405,7 @@ end
 ### Step 3: Replace `.call` with Domain Method
 
 ```ruby
-class Registration
+class User::Registration
   include ActiveModel::Model
   
   # Instead of .call, use a meaningful verb
@@ -421,8 +440,8 @@ end
 
 # After
 def create
-  @registration = Registration.new(registration_params)
-  
+  @registration = User::Registration.new(registration_params)
+
   if @registration.complete
     redirect_to dashboard_path
   else

@@ -85,18 +85,17 @@ Structure your test suite as a pyramid:
 Every test should follow:
 
 ```ruby
+# Setup - create objects and data
+let(:user) { create(:user) }
+
 it "does something" do
-  # Setup - create objects and data
-  user = create(:user)
-  
   # Exercise - execute the code being tested
   result = user.full_name
-  
+
   # Verify - check expectations
   expect(result).to eq "John Doe"
-  
-  # Teardown - handled by framework
 end
+# Teardown - handled by framework
 ```
 
 **Audit Check**: Tests should have clear separation between phases.
